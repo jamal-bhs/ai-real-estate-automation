@@ -1,0 +1,11 @@
+{
+  "name": "AI Real Estate - Property Listing Draft",
+  "nodes": [
+    {"parameters":{"httpMethod":"POST","path":"property-listing","responseMode":"lastNode","options":{}},"id":"1","name":"Property Webhook","type":"n8n-nodes-base.webhook","typeVersion":2,"position":[0,0]},
+    {"parameters":{"method":"POST","url":"http://host.docker.internal:8000/generate-listing","sendBody":true,"contentType":"raw","rawContentType":"application/json","body":"={{ JSON.stringify($json.body ?? $json) }}","options":{}},"id":"2","name":"Generate Listing","type":"n8n-nodes-base.httpRequest","typeVersion":4.2,"position":[280,0]},
+    {"parameters":{"assignments":{"assignments":[{"id":"approval","name":"workflow_status","value":"awaiting-human-validation","type":"string"}]},"options":{}},"id":"3","name":"Human Validation Required","type":"n8n-nodes-base.set","typeVersion":3.4,"position":[560,0]}
+  ],
+  "connections":{"Property Webhook":{"main":[[{"node":"Generate Listing","type":"main","index":0}]]},"Generate Listing":{"main":[[{"node":"Human Validation Required","type":"main","index":0}]]}},
+  "active":false,
+  "settings":{"executionOrder":"v1"}
+}

@@ -1,0 +1,8 @@
+{
+  "property_type": "Appartement",
+  "city": "Lyon",
+  "area_m2": 68,
+  "rooms": 3,
+  "price": 345000,
+  "features": ["balcon", "proche transports", "lumineux"]
+}

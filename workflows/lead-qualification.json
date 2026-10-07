@@ -1,0 +1,13 @@
+{
+  "name": "AI Real Estate - Lead Qualification",
+  "nodes": [
+    {"parameters":{"httpMethod":"POST","path":"real-estate-lead","responseMode":"lastNode","options":{}},"id":"1","name":"New Lead Webhook","type":"n8n-nodes-base.webhook","typeVersion":2,"position":[0,0]},
+    {"parameters":{"method":"POST","url":"http://host.docker.internal:8000/qualify-lead","sendBody":true,"contentType":"raw","rawContentType":"application/json","body":"={{ JSON.stringify($json.body ?? $json) }}","options":{}},"id":"2","name":"AI Qualification API","type":"n8n-nodes-base.httpRequest","typeVersion":4.2,"position":[260,0]},
+    {"parameters":{"conditions":{"options":{"caseSensitive":true,"leftValue":"","typeValidation":"strict"},"conditions":[{"id":"priority","leftValue":"={{ $json.qualification.priority }}","rightValue":"high","operator":{"type":"string","operation":"equals"}}],"combinator":"and"},"options":{}},"id":"3","name":"High Priority?","type":"n8n-nodes-base.if","typeVersion":2.2,"position":[520,0]},
+    {"parameters":{"assignments":{"assignments":[{"id":"status","name":"routing","value":"priority-follow-up","type":"string"}]},"options":{}},"id":"4","name":"Priority Follow-up","type":"n8n-nodes-base.set","typeVersion":3.4,"position":[780,-100]},
+    {"parameters":{"assignments":{"assignments":[{"id":"status","name":"routing","value":"standard-follow-up","type":"string"}]},"options":{}},"id":"5","name":"Standard Follow-up","type":"n8n-nodes-base.set","typeVersion":3.4,"position":[780,100]}
+  ],
+  "connections":{"New Lead Webhook":{"main":[[{"node":"AI Qualification API","type":"main","index":0}]]},"AI Qualification API":{"main":[[{"node":"High Priority?","type":"main","index":0}]]},"High Priority?":{"main":[[{"node":"Priority Follow-up","type":"main","index":0}],[{"node":"Standard Follow-up","type":"main","index":0}]]}},
+  "active":false,
+  "settings":{"executionOrder":"v1"}
+}
